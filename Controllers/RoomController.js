@@ -36,3 +36,50 @@ exp.AddRoom = async (req, res, next) => {
             })
         })
 }
+
+exp.GetAllRooms=async(req,res,next)=>{
+    await Room.find({})
+    .then(rooms=>{
+        if(rooms.length >0){
+            return res.status(200).json({
+                data:rooms,
+                message:"Data found"
+            })
+        }
+        return res.status(200).json({
+            data:rooms,
+            message:"No data found"
+        })
+    })
+    .catch(err=>{
+        return res.status(500).json({
+            message:"some Error occured while searching data"
+        })
+    })
+}
+
+exp.GetSingleRoom=async(req,res,next)=>{
+    console.log(req.params);
+    const {roomId}=req.params;
+    await Room.findById(roomId)
+        .then(resp=>{
+            if(resp){
+                return res.status(200).json({
+                    data:resp,
+                    message:"room found",
+                })
+            }
+            else{
+                return res.status(200).json({
+                    data:{},
+                    message:"no room found",
+                })
+            }
+        })
+        .catch(err=>{
+            return res.status(500).json({
+                message:"Some error occured",
+                error:err
+            })
+        })
+}
