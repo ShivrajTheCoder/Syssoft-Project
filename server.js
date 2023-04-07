@@ -28,8 +28,9 @@ async function main() {
 
 // Routes
 const UserRoutes=require("./Routes/UserRoutes");
-
+const RoomRoutes=require("./Routes/RoomRoutes");
 app.use('/user',jsonParser,UserRoutes);
+app.use("/room",jsonParser,RoomRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log("listening");
