@@ -63,7 +63,7 @@ exp.login=async(req,res,next)=>{
                     })
                 }
                 const token =jwt.sign({
-                    username:result.username,
+                    email:result.email,
                     userId:result._id
                 },process.env.JWT_USER_KEY,
                 {
