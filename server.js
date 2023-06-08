@@ -1,37 +1,28 @@
-const express=require("express");
-const app=express();
-const cors=require("cors");
-const mongoose=require("mongoose");
-const bodyParser = require("body-parser");
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const { connectToDatabase } = require("./db_connection");
+
 if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
+  require("dotenv").config();
 }
+
 app.use(cors());
-const { json } = require("body-parser");
-// create application/json parser
-var jsonParser = bodyParser.json()
+app.use(express.json());
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-const DB_URL = process.env.DB_URL;
-
-main().then(() => {
-    console.log("Connected!!");
-}).catch(err => {
-    console.log(err)
-});
-
-async function main() {
-    await mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-}
+(async () => {
+  try {
+    await connectToDatabase();
+    console.log("Connected to the database successfully!");
+  } catch (err) {
+    console.log(err);
+  }
+})();
 
 // Routes
-const UserRoutes=require("./Routes/UserRoutes");
-const RoomRoutes=require("./Routes/RoomRoutes");
-app.use('/user',jsonParser,UserRoutes);
-app.use("/room",jsonParser,RoomRoutes);
+const UserRoutes = require("./Routes/UserRoutes");
+app.use("/user", UserRoutes);
 
-app.listen(process.env.PORT,()=>{
-    console.log("listening");
-})
+app.listen(process.env.PORT, () => {
+  console.log("Listening on port", process.env.PORT);
+});

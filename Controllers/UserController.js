@@ -1,5 +1,5 @@
 const exp = module.exports;
-const User = require("../models/User/UserModels");
+const User = require("../Models/UserModels");
 
 
 //
